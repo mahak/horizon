@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: horizon VERSION\n"
 "Report-Msgid-Bugs-To: https://bugs.launchpad.net/openstack-i18n/\n"
-"POT-Creation-Date: 2026-08-07 07:40+0000\n"
+"POT-Creation-Date: 2026-09-03 22:45+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -4058,13 +4058,6 @@ msgstr "Selezionare la rete per il collegamento dell'interfaccia."
 msgid "Select the port to detach."
 msgstr "Selezionare la porta da scollegare."
 
-msgid ""
-"Select the projects where the flavors will be used. If no projects are "
-"selected, then the flavor will be available in all projects."
-msgstr ""
-"Selezionare i progetti in cui verranno utilizzati i flavor. Se non viene "
-"selezionato nessun progetto il flavor sarà disponibile in tutti i progetti."
-
 msgid "Selected Hosts"
 msgstr "Host selezionati"
 
@@ -4974,10 +4967,6 @@ msgstr "Impossibile creare progetto \"%s\"."
 msgid "Unable to create role."
 msgstr "Impossibile creare il ruolo."
 
-#, python-format
-msgid "Unable to create security group: %s"
-msgstr "Impossibile creare il gruppo di sicurezza: %s"
-
 msgid "Unable to create snapshot."
 msgstr "Impossibile creare l'istantanea."
 
@@ -5611,10 +5600,6 @@ msgstr ""
 
 msgid "Unable to update role."
 msgstr "Impossibile aggiornare un ruolo."
-
-#, python-format
-msgid "Unable to update security group: %s"
-msgstr "Impossibile aggiornare il gruppo di sicurezza: %s"
 
 #, python-format
 msgid "Unable to update subnet \"%s\"."

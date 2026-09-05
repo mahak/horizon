@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: horizon VERSION\n"
 "Report-Msgid-Bugs-To: https://bugs.launchpad.net/openstack-i18n/\n"
-"POT-Creation-Date: 2026-08-07 07:40+0000\n"
+"POT-Creation-Date: 2026-09-03 22:45+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -4626,13 +4626,6 @@ msgid "Select the port to detach."
 msgstr "Select the port to detach."
 
 msgid ""
-"Select the projects where the flavors will be used. If no projects are "
-"selected, then the flavor will be available in all projects."
-msgstr ""
-"Select the projects where the flavours will be used. If no projects are "
-"selected, then the flavour will be available in all projects."
-
-msgid ""
 "Select the projects where the volume types will be used. If no projects are "
 "selected, then volume type will be only visible by users with the admin role."
 msgstr ""
@@ -5706,10 +5699,6 @@ msgstr "Unable to create project \"%s\"."
 msgid "Unable to create role."
 msgstr "Unable to create role."
 
-#, python-format
-msgid "Unable to create security group: %s"
-msgstr "Unable to create security group: %s"
-
 msgid "Unable to create snapshot."
 msgstr "Unable to create snapshot."
 
@@ -6364,10 +6353,6 @@ msgstr "Unable to update mapping. Rules has malformed JSON data."
 
 msgid "Unable to update role."
 msgstr "Unable to update role."
-
-#, python-format
-msgid "Unable to update security group: %s"
-msgstr "Unable to update security group: %s"
 
 #, python-format
 msgid "Unable to update subnet \"%s\"."

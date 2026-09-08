@@ -916,8 +916,8 @@ class NeutronApiTests(test.APIMockTestCase):
         subnet = self.api_subnets_sdk[0]
         subnetv6 = self.api_subnets_sdk[1]
         network_id = self.api_networks_sdk[0]['id']
-        subnet_id = self.api_networks_sdk[0]['subnets'][0]
-        subnetv6_id = self.api_networks_sdk[0]['subnets'][1]
+        subnet_id = self.api_networks_sdk[0]['subnet_ids'][0]
+        subnetv6_id = self.api_networks_sdk[0]['subnet_ids'][1]
 
         networkclient = mock_networkclient.return_value
         networkclient.get_network.return_value = network
@@ -1273,8 +1273,8 @@ class NeutronApiTests(test.APIMockTestCase):
                   'name': port['name'],
                   'device_id': port['device_id']}
         api_params = params.copy()
-        params['binding__vnic_type'] = port['binding:vnic_type']
-        api_params['binding:vnic_type'] = port['binding:vnic_type']
+        params['binding__vnic_type'] = port['binding_vnic_type']
+        api_params['binding:vnic_type'] = port['binding_vnic_type']
 
         network_client = mock_networkclient.return_value
         network_client.create_port.return_value = port
@@ -1292,8 +1292,8 @@ class NeutronApiTests(test.APIMockTestCase):
         params = {'name': port_data['name'],
                   'device_id': port_data['device_id']}
         api_params = params.copy()
-        params['binding__vnic_type'] = port_data['binding:vnic_type']
-        api_params['binding:vnic_type'] = port_data['binding:vnic_type']
+        params['binding__vnic_type'] = port_data['binding_vnic_type']
+        api_params['binding:vnic_type'] = port_data['binding_vnic_type']
 
         network_client = mock_networkclient.return_value
         network_client.update_port.return_value = port_data
@@ -2091,21 +2091,24 @@ class NeutronApiSecurityGroupTests(test.APIMockTestCase):
                              in self.api_security_groups_sdk])
 
     def _cmp_sg_rule(self, exprule, retrule):
+        # exprule is either an SDK SecurityGroupRule, which exposes the
+        # normalized name, or the raw dict nested inside an SDK
+        # SecurityGroup, which keeps the server side name.
+        ethertype = (exprule['ether_type'] if 'ether_type' in exprule
+                     else exprule['ethertype'])
         self.assertEqual(exprule['id'], retrule.id)
         self.assertEqual(exprule['security_group_id'],
                          retrule.parent_group_id)
         self.assertEqual(exprule['direction'],
                          retrule.direction)
-        self.assertEqual(exprule['ethertype'],
-                         retrule.ethertype)
+        self.assertEqual(ethertype, retrule.ethertype)
         self.assertEqual(exprule['port_range_min'],
                          retrule.from_port)
         self.assertEqual(exprule['port_range_max'],
                          retrule.to_port,)
         if (exprule['remote_ip_prefix'] is None and
                 exprule['remote_group_id'] is None):
-            expcidr = ('::/0' if exprule['ethertype'] == 'IPv6'
-                       else '0.0.0.0/0')
+            expcidr = '::/0' if ethertype == 'IPv6' else '0.0.0.0/0'
         else:
             expcidr = exprule['remote_ip_prefix']
         self.assertEqual(expcidr, retrule.ip_range.get('cidr'))
@@ -2273,7 +2276,7 @@ class NeutronApiSecurityGroupTests(test.APIMockTestCase):
 
         ret = api.neutron.security_group_rule_create(
             self.request, sg_rule['security_group_id'],
-            sg_rule['direction'], sg_rule['ethertype'], sg_rule['protocol'],
+            sg_rule['direction'], sg_rule['ether_type'], sg_rule['protocol'],
             sg_rule['port_range_min'], sg_rule['port_range_max'],
             sg_rule['remote_ip_prefix'], sg_rule['remote_group_id'],
             description)
@@ -2617,7 +2620,7 @@ class NeutronApiFloatingIpTests(test.APIMockTestCase):
         # Port on the first subnet is connected to a router
         # attached to external network in neutron_data.
         subnet_id = self.subnets.first().id
-        shared_nets = [n for n in self.api_networks_sdk if n['shared']]
+        shared_nets = [n for n in self.api_networks_sdk if n['is_shared']]
         shared_subnet_ids = [s for n in shared_nets for s in n['subnet_ids']]
         target_ports = []
         for p in ports:
@@ -2694,7 +2697,7 @@ class NeutronApiFloatingIpTests(test.APIMockTestCase):
         list_ports_retvals.append(rinfs)
         shared_nets = [n for n in self.api_networks_sdk if n['is_shared']]
         list_nets_retvals.append(shared_nets)
-        shared_subnet_ids = [s for n in shared_nets for s in n['subnets']]
+        shared_subnet_ids = [s for n in shared_nets for s in n['subnet_ids']]
         shared_subs = [s for s in self.api_subnets_sdk
                        if s['id'] in shared_subnet_ids]
         self.netclient.subnets.side_effect = [shared_subs]
